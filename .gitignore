@@ -1,0 +1,17 @@
+node_modules/
+.next/
+.next-ui/
+.next-release/
+.env*
+!.env.example
+.data/
+.atlas/
+.vercel/
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+*.tsbuildinfo
+playwright-report/
+test-results/
+evidence/local-deployment.json
+.vercel

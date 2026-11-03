@@ -1,0 +1,21 @@
+{
+  "checked_at_utc": "2026-11-02T20:45:45.613696+00:00",
+  "mainnet_chain_id": 4663,
+  "testnet_chain_id": 46630,
+  "token": "0x5173b8eA6923c2d40267890D45C46a3480954773",
+  "token_block": 104502002,
+  "token_decimals": 18,
+  "token_symbol": "WIF",
+  "token_code_bytes": 3248,
+  "submission_end_utc": "2026-11-12T17:30:00+00:00",
+  "final_end_utc": "2026-11-16T17:30:00+00:00",
+  "source_inspection": "Blockscout API blocked by Cloudflare challenge; not verified",
+  "writes_or_wallet_access": false,
+  "sources": [
+    "https://docs.robinhood.com/chain/connecting",
+    "https://worldisflat.fun",
+    "https://worldisflat.fun/build/rules",
+    "https://worldisflat.fun/build/api/event",
+    "https://worldisflat.fun/build/assets/js/copy.js"
+  ]
+}

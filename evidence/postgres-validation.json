@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-02",
+  "database": "PostgreSQL 17.11",
+  "environment": "isolated local validation cluster",
+  "status": "passed",
+  "applicationRole": { "superuser": false, "bypassRls": false },
+  "independentConnectionPools": 2,
+  "checks": [
+    "Atomic repeatable migration; explicit PUBLIC/anon/authenticated grants removed; private-schema access revoked; RLS enforced",
+    "16 simultaneous joins reserve exactly 3 places and 3 registration jobs",
+    "16 simultaneous starts create one attempt and expose numeric deadlines without scores or answer keys",
+    "Racing answers stay immutable; retries are idempotent; exact-deadline expiry preserves partial scoring",
+    "8 simultaneous SIWE logins consume the nonce once and persist a hashed session token",
+    "24 concurrent private-table upserts preserve every increment",
+    "Failed transactions roll back public and private writes"
+  ],
+  "additionalValidation": { "existingBackendTestsPassed": 13, "typecheck": "passed", "atlasMcpBuild": "passed" },
+  "reproduce": "POSTGRES_TEST_URL=postgresql://<validation-admin>@127.0.0.1:<port>/postgres pnpm test:postgres",
+  "limits": "Hosted Supabase role memberships/default privileges/exposed schemas still require inspection. This does not verify a hosted deployment or worker transaction/reorg recovery."
+}

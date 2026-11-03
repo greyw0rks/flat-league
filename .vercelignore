@@ -1,0 +1,12 @@
+.data/
+.atlas/
+.env*
+node_modules/
+.next/
+.next-ui/
+.next-release/
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+test-results/
+playwright-report/

@@ -1,0 +1,7 @@
+allowBuilds:
+  esbuild: true
+  keccak: true
+  bufferutil: false
+  utf-8-validate: false
+overrides:
+  use-sync-external-store: ^1.6.0

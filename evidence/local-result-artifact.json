@@ -1,0 +1,335 @@
+{
+  "version": 1,
+  "competitionId": "ec806b19-979e-4c1c-b46d-378f43a95478",
+  "onchainId": "9",
+  "rulesHash": "0x363ef4e3e5b4e3409629e6890effe773e7136f4b71b999cd6b8895843a7f23fc",
+  "rules": {
+    "chainId": 31337,
+    "creator": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+    "description": "Local browser verification of creator funding, a timed run, settlement, and a real MockWIF transfer.",
+    "endAt": 1793657520000,
+    "finalizeBy": 1793743920000,
+    "manager": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+    "maxParticipants": 100,
+    "pool": "10000000000000000000",
+    "questionCount": 10,
+    "startAt": 1793657340000,
+    "ties": [
+      "score-desc",
+      "elapsed-asc",
+      "started-asc",
+      "wallet-asc"
+    ],
+    "timerSeconds": 120,
+    "title": "Browser proof 1793657259592",
+    "token": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+    "version": 1,
+    "weights": [
+      60,
+      25,
+      15
+    ]
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What does an ERC-20 token contract primarily standardize?",
+      "options": [
+        {
+          "id": "q1-0",
+          "text": "Fungible token balances and transfers"
+        },
+        {
+          "id": "q1-1",
+          "text": "Website authentication"
+        },
+        {
+          "id": "q1-2",
+          "text": "NFT artwork"
+        },
+        {
+          "id": "q1-3",
+          "text": "Network consensus"
+        }
+      ],
+      "correctOption": "q1-0"
+    },
+    {
+      "id": "q2",
+      "prompt": "What is the native gas currency on Robinhood Chain?",
+      "options": [
+        {
+          "id": "q2-0",
+          "text": "ETH"
+        },
+        {
+          "id": "q2-1",
+          "text": "WIF"
+        },
+        {
+          "id": "q2-2",
+          "text": "USDG"
+        },
+        {
+          "id": "q2-3",
+          "text": "BTC"
+        }
+      ],
+      "correctOption": "q2-0"
+    },
+    {
+      "id": "q3",
+      "prompt": "Which operation lets a contract spend an ERC-20 token allowance?",
+      "options": [
+        {
+          "id": "q3-0",
+          "text": "transferFrom"
+        },
+        {
+          "id": "q3-1",
+          "text": "balanceOf"
+        },
+        {
+          "id": "q3-2",
+          "text": "symbol"
+        },
+        {
+          "id": "q3-3",
+          "text": "decimals"
+        }
+      ],
+      "correctOption": "q3-0"
+    },
+    {
+      "id": "q4",
+      "prompt": "Which property makes an API retry safe to repeat?",
+      "options": [
+        {
+          "id": "q4-0",
+          "text": "Idempotency"
+        },
+        {
+          "id": "q4-1",
+          "text": "Randomness"
+        },
+        {
+          "id": "q4-2",
+          "text": "Higher latency"
+        },
+        {
+          "id": "q4-3",
+          "text": "More animations"
+        }
+      ],
+      "correctOption": "q4-0"
+    },
+    {
+      "id": "q5",
+      "prompt": "What does escrow mean in a funded competition?",
+      "options": [
+        {
+          "id": "q5-0",
+          "text": "Funds are held until rules permit payout or refund"
+        },
+        {
+          "id": "q5-1",
+          "text": "Funds earn a guaranteed return"
+        },
+        {
+          "id": "q5-2",
+          "text": "The token price is fixed"
+        },
+        {
+          "id": "q5-3",
+          "text": "The player pays an entry fee"
+        }
+      ],
+      "correctOption": "q5-0"
+    },
+    {
+      "id": "q6",
+      "prompt": "Which signature standard binds structured data to a domain?",
+      "options": [
+        {
+          "id": "q6-0",
+          "text": "EIP-712"
+        },
+        {
+          "id": "q6-1",
+          "text": "ERC-721"
+        },
+        {
+          "id": "q6-2",
+          "text": "HTTP/2"
+        },
+        {
+          "id": "q6-3",
+          "text": "UTF-8"
+        }
+      ],
+      "correctOption": "q6-0"
+    },
+    {
+      "id": "q7",
+      "prompt": "What prevents the same quiz answer retry from being accepted twice?",
+      "options": [
+        {
+          "id": "q7-0",
+          "text": "A unique idempotency key"
+        },
+        {
+          "id": "q7-1",
+          "text": "A new wallet popup"
+        },
+        {
+          "id": "q7-2",
+          "text": "A random prize"
+        },
+        {
+          "id": "q7-3",
+          "text": "A shorter timer"
+        }
+      ],
+      "correctOption": "q7-0"
+    },
+    {
+      "id": "q8",
+      "prompt": "Which unit should be used for exact token accounting?",
+      "options": [
+        {
+          "id": "q8-0",
+          "text": "Integer base units"
+        },
+        {
+          "id": "q8-1",
+          "text": "Rounded USD estimates"
+        },
+        {
+          "id": "q8-2",
+          "text": "JavaScript floating-point amounts"
+        },
+        {
+          "id": "q8-3",
+          "text": "Screen pixels"
+        }
+      ],
+      "correctOption": "q8-0"
+    },
+    {
+      "id": "q9",
+      "prompt": "What should happen if a funded round has no valid attempts?",
+      "options": [
+        {
+          "id": "q9-0",
+          "text": "Its pool is refunded through the defined rules"
+        },
+        {
+          "id": "q9-1",
+          "text": "The prize goes to a random wallet"
+        },
+        {
+          "id": "q9-2",
+          "text": "The pool doubles"
+        },
+        {
+          "id": "q9-3",
+          "text": "Every player is charged"
+        }
+      ],
+      "correctOption": "q9-0"
+    },
+    {
+      "id": "q10",
+      "prompt": "What determines the first tie break in a Flat League Knowledge Run?",
+      "options": [
+        {
+          "id": "q10-0",
+          "text": "Server-measured completion time"
+        },
+        {
+          "id": "q10-1",
+          "text": "Wallet balance"
+        },
+        {
+          "id": "q10-2",
+          "text": "Token price"
+        },
+        {
+          "id": "q10-3",
+          "text": "Number of followers"
+        }
+      ],
+      "correctOption": "q10-0"
+    }
+  ],
+  "salt": "0x3a313ab98d0c4546d5a2a116d90ed864ff17906ebde2904f12016070b7468d32",
+  "transcripts": [
+    {
+      "wallet": "0xF0747730a3F6e7eA1E978496405Ab10e9629a4A5",
+      "score": 100,
+      "elapsedMs": 2849,
+      "startedAt": 1793657351924,
+      "attemptId": "a40eca47-dc4b-4dd1-aaf9-ebf27d3c6eda",
+      "answers": [
+        {
+          "question_id": "q2",
+          "option_id": "q2-0",
+          "accepted_at": 1793657353003
+        },
+        {
+          "question_id": "q8",
+          "option_id": "q8-0",
+          "accepted_at": 1793657353204
+        },
+        {
+          "question_id": "q3",
+          "option_id": "q3-0",
+          "accepted_at": 1793657353391
+        },
+        {
+          "question_id": "q7",
+          "option_id": "q7-0",
+          "accepted_at": 1793657353583
+        },
+        {
+          "question_id": "q4",
+          "option_id": "q4-0",
+          "accepted_at": 1793657353791
+        },
+        {
+          "question_id": "q1",
+          "option_id": "q1-0",
+          "accepted_at": 1793657353994
+        },
+        {
+          "question_id": "q5",
+          "option_id": "q5-0",
+          "accepted_at": 1793657354210
+        },
+        {
+          "question_id": "q6",
+          "option_id": "q6-0",
+          "accepted_at": 1793657354422
+        },
+        {
+          "question_id": "q10",
+          "option_id": "q10-0",
+          "accepted_at": 1793657354595
+        },
+        {
+          "question_id": "q9",
+          "option_id": "q9-0",
+          "accepted_at": 1793657354773
+        }
+      ]
+    }
+  ],
+  "payouts": [
+    {
+      "winner": "0xF0747730a3F6e7eA1E978496405Ab10e9629a4A5",
+      "score": 100,
+      "elapsedMs": 2849,
+      "amount": "10000000000000000000"
+    }
+  ]
+}

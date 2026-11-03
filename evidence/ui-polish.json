@@ -1,0 +1,21 @@
+{
+  "base": "http://localhost:3020",
+  "checkedAt": "2026-11-03T07:47:29.865Z",
+  "errors": [],
+  "fixtureScreenshots": [
+    "results-three-player-fixture-desktop.png",
+    "results-three-player-fixture-mobile.png"
+  ],
+  "keyboardDrawerAndAnchor": "passed",
+  "responsiveAndFilters": [
+    "tablet",
+    "mobile",
+    "small-mobile"
+  ],
+  "actualResultRound": "a6e7b369-7f2d-46f7-b61b-970c61fe7321",
+  "threePlayerLayoutFixture": "passed",
+  "pauseAndOffscreen": "requires WebGL-capable browser; unavailable controls correctly hidden",
+  "webgl": "static fallback rendered",
+  "reducedMotion": "static artwork, no canvas",
+  "status": "passed"
+}

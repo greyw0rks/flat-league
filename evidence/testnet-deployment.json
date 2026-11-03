@@ -1,0 +1,27 @@
+{
+  "schema": "flatleague.testnet-deployment.v1",
+  "checkedAt": "2026-11-03T09:37:26.183Z",
+  "chainId": 46630,
+  "network": "Robinhood Chain Testnet",
+  "rewardToken": "MockWIF",
+  "testTokensOnly": true,
+  "deployer": "0xBA46d08B9E298E8E70096Fc238Da207139BCCAB7",
+  "resultSigner": "0x628780378A448a36dFFc0d40045DD16482539C29",
+  "registrar": "0xBA46d08B9E298E8E70096Fc238Da207139BCCAB7",
+  "token": {
+    "address": "0xf7c5b108fe25ad17bba9ba4225c40ef167664fc8",
+    "transactionHash": "0xe2e207f001c48716bd936f56bcabd825f74e4ff431e0f64dd311bbfc18d704fd",
+    "blockNumber": "147615395",
+    "blockHash": "0x6f833947a8a180f91a3a7ef57d430930902ec6096725c91ac1097fb246893165",
+    "gasFeeETH": "0.00001175206"
+  },
+  "manager": {
+    "address": "0x0e9cb1eb0fdf7d13e2eaec067ec5512acbb1b3bd",
+    "transactionHash": "0x18a6837cd2dc5b861da4ab87edb342f9a8aea9a4e2870fff96d44aabe26334d2",
+    "blockNumber": "147615459",
+    "blockHash": "0x57f9b1ab96c274f05800717ade0574c46d50247d22e8ce8839e71dbeaa89c3d0",
+    "gasFeeETH": "0.00005347711"
+  },
+  "remainingGasETH": "0.00993477083",
+  "note": "Genuine Robinhood Chain testnet deployments and verified authorities. MockWIF is a permissionless test token; these receipts do not establish real mainnet WIF use."
+}

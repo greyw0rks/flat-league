@@ -1,0 +1,117 @@
+{
+  "title": "world is flat hackathon",
+  "event_name": "world is flat hackathon",
+  "announcements": [
+    {
+      "id": 1,
+      "emblem": "bell",
+      "body": "more time to build. submissions close 12 nov, 17:30 utc. round one 12 to 14 nov, final 14 to 16 nov. same prize, same rules.",
+      "link": "https://x.com/WIFonRH/status/2116205991457063295?a=hhAb9mV6iyaIr-ICBM4&s=20",
+      "created_at": 1793378418,
+      "updated_at": 1793378418
+    }
+  ],
+  "phase": "building",
+  "round": null,
+  "now": 1793651721,
+  "dates": {
+    "start_at": 1792603800,
+    "end_at": 1794504600,
+    "round_one_end_at": 1794677400,
+    "final_end_at": 1794850200
+  },
+  "categories": [
+    {
+      "slug": "hooks-and-defi",
+      "name": "hooks and defi",
+      "description": "uniswap v4 hooks, vaults, pools, anything that moves value",
+      "emblem": "hourglass",
+      "projects": 5
+    },
+    {
+      "slug": "agents-and-ai",
+      "name": "agents and ai",
+      "description": "onchain agents and ai tools that run on $wif",
+      "emblem": "star",
+      "projects": 3
+    },
+    {
+      "slug": "stock-tokens",
+      "name": "Stock Tokens",
+      "description": "products built on Robinhood Chain Stock Tokens",
+      "emblem": "scroll",
+      "projects": 1
+    },
+    {
+      "slug": "games",
+      "name": "games",
+      "description": "games and competitions with $wif inside",
+      "emblem": "chequered-flag",
+      "projects": 7
+    },
+    {
+      "slug": "consumer-and-payments",
+      "name": "consumer and payments",
+      "description": "apps for everyday people. tipping, paying, sending",
+      "emblem": "bell",
+      "projects": 1
+    },
+    {
+      "slug": "onboarding",
+      "name": "onboarding",
+      "description": "products that bring people with no crypto to $wif",
+      "emblem": "pointing-hand",
+      "projects": 2
+    },
+    {
+      "slug": "social-and-creators",
+      "name": "social and creators",
+      "description": "tools for creators and communities, with $wif at the center",
+      "emblem": "quill",
+      "projects": 3
+    },
+    {
+      "slug": "tools-and-infra",
+      "name": "tools and infra",
+      "description": "bots, dashboards, sdks, anything builders use",
+      "emblem": "hammer-anvil",
+      "projects": 2
+    }
+  ],
+  "judges": [
+    {
+      "x_handle": "cryptogle",
+      "display_name": "ogle",
+      "role": "security expert, co-founder of glue, advisor to world liberty"
+    },
+    {
+      "x_handle": "cryptoape",
+      "display_name": "niro",
+      "role": "founder of multichain advisors, advisor to pyth and moonpay"
+    },
+    {
+      "x_handle": "blueshirt666",
+      "display_name": "daniel zou",
+      "role": "ex binance and mckinsey, forbes 30 under 30"
+    },
+    {
+      "x_handle": "glabuz",
+      "display_name": "glabuz",
+      "role": "gaming and retail bd at ava labs, ex polygon"
+    },
+    {
+      "x_handle": "sensahil",
+      "display_name": "sahil sen",
+      "role": "devrel at Quicknode, hack this fall"
+    },
+    {
+      "x_handle": "wifonrh",
+      "display_name": "world is flat team",
+      "role": "world is flat"
+    }
+  ],
+  "judges_complete": false,
+  "finalists_published": false,
+  "result": null,
+  "result_under_review": false
+}

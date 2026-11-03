@@ -1,0 +1,75 @@
+{
+  "checkedAt": "2026-11-03T09:58:12.858Z",
+  "provider": "Neon",
+  "plan": "Free",
+  "project": "flat-league",
+  "tables": [
+    {
+      "schema": "private",
+      "table": "fl_answers",
+      "rls": true
+    },
+    {
+      "schema": "private",
+      "table": "fl_attempts",
+      "rls": true
+    },
+    {
+      "schema": "public",
+      "table": "fl_chain_events",
+      "rls": true
+    },
+    {
+      "schema": "public",
+      "table": "fl_competitions",
+      "rls": true
+    },
+    {
+      "schema": "private",
+      "table": "fl_drafts",
+      "rls": true
+    },
+    {
+      "schema": "private",
+      "table": "fl_jobs",
+      "rls": true
+    },
+    {
+      "schema": "private",
+      "table": "fl_nonces",
+      "rls": true
+    },
+    {
+      "schema": "public",
+      "table": "fl_participants",
+      "rls": true
+    },
+    {
+      "schema": "private",
+      "table": "fl_question_packs",
+      "rls": true
+    },
+    {
+      "schema": "private",
+      "table": "fl_rate_limits",
+      "rls": true
+    },
+    {
+      "schema": "public",
+      "table": "fl_rewards",
+      "rls": true
+    },
+    {
+      "schema": "private",
+      "table": "fl_sessions",
+      "rls": true
+    },
+    {
+      "schema": "private",
+      "table": "fl_state",
+      "rls": true
+    }
+  ],
+  "apiRoles": [],
+  "note": "Isolated hosted PostgreSQL database migrated explicitly. Quiz/auth/job tables use the private schema; all application tables have RLS. No local MockWIF fixtures or participant histories were copied."
+}

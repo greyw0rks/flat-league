@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-11-02T23:05:12.261Z",
+  "network": "Local Anvil ONLY",
+  "chainId": 31337,
+  "competitionId": "a6e7b369-7f2d-46f7-b61b-970c61fe7321",
+  "onchainId": "10",
+  "creator": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "player": "0x22520ec1F11A505A52A0858bC56Ad8C4d285893B",
+  "pool": "10000000000000000000",
+  "approvalHash": "0xeeda1bd8cd9065fc2855760b75a639666e8e13ee719d01fdde2e2bcf89376a40",
+  "fundingHash": "0xfd4fef76c5fe03a6cc051a58c59e921d4f697adaea6dd3564577077a30e59178",
+  "settlementHash": "0x03c1e3dd57840fbb617ea9693a8e7aa199fb89ed7b99202c40a4d5f375216296",
+  "rewardHash": "0x75c50595c4021ddf0a923ce7b9aa8c1f063f35a157b38211eeeff16b323b12b4",
+  "artifactHash": "0x384047e12e7ad365990627339077025dcbe00980a9bcbf8d3b9f60b222484da1",
+  "score": 100,
+  "elapsedMs": 2641,
+  "checks": [
+    "creator browser authoring/approval/funding",
+    "wallet SIWE login",
+    "sponsored registration",
+    "ten answers",
+    "reload recovery",
+    "hidden live scores",
+    "signed settlement",
+    "confirmed MockWIF balance increase",
+    "question commitment",
+    "mobile overflow",
+    "public routes",
+    "arena artwork/fallback",
+    "zero browser runtime errors"
+  ]
+}

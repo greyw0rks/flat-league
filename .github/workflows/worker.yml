@@ -1,0 +1,22 @@
+name: Process due Flat League testnet jobs
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: flat-league-worker
+  cancel-in-progress: false
+jobs:
+  worker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Advance retained jobs
+        env:
+          WORKER_TOKEN: ${{ secrets.WORKER_TOKEN }}
+        run: >-
+          curl --fail --silent --show-error --max-time 90
+          --request POST --header "Authorization: Bearer ${WORKER_TOKEN}"
+          https://flat-league.vercel.app/api/worker
