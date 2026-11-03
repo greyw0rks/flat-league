@@ -1,5 +1,9 @@
 # Flat League
 
+**Live testnet MVP:** https://flat-league.vercel.app · **Source:** https://github.com/greyw0rks/flat-league
+
+The hosted release uses isolated Neon PostgreSQL and verified Robinhood Chain testnet contracts. Rewards are MockWIF test tokens. [Hosting details](docs/HOSTING.md) cover the browser test-token button, sponsored jobs, and scheduled worker.
+
 Compete for something real.
 
 Creator-funded, free-to-enter knowledge competitions. WIF funds the prize pool; performance determines the winners; Robinhood Chain records escrow and reward settlement.

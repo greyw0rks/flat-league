@@ -1,5 +1,13 @@
 # Flat League handoff — November 3, 2026
 
+## Hosted release checkpoint
+
+The repository is now public at https://github.com/greyw0rks/flat-league and connected to Vercel. The production alias is https://flat-league.vercel.app. An isolated Neon Free database is migrated; the Robinhood testnet MockWIF and CompetitionManager authorities are verified in `evidence/testnet-deployment.json`.
+
+The creator studio includes a wallet-signed request for 1,000 MockWIF test tokens. API activity advances retained jobs with Next.js `after()`; the authenticated GitHub Actions worker provides a five-minute scheduled fallback. The first hosted worker run succeeded. `evidence/hosted-ui.json` records public page/API checks at 1440/390/360px, with no browser runtime errors. Tests and the production build pass. Mainnet WIF and hardware WebGL verification remain open; no external participant or real WIF payout is claimed.
+
+The worker environment import now uses named `loadEnvConfig`, which works in both the CLI and bundled Vercel worker route. Local preview configuration remains separate from `.data/hosted.env`. See [HOSTING.md](HOSTING.md) for the hosted architecture and schedule limits.
+
 The local competition loop is implemented and verified. Continue with the production gates in [IMPLEMENTATION.md](IMPLEMENTATION.md), rather than rebuilding the scaffold.
 
 ## Current verification
@@ -48,4 +56,4 @@ Preserve `.env.local`, `.data/flat-league.db` and its WAL files, and `.data/anvi
 4. Review actual device/keyboard/WebGL performance and creator account-change/reverted-funding recovery. Headless normal-motion screenshots can use the static fallback and do not prove hardware WebGL performance.
 5. Publish/deploy, recruit external participants, gather real WIF evidence and prepare the demo/submission.
 
-Git still has no initial commit or remote; the project files are untracked. Atlas's missing dependencies were restored and its dotenv startup banner silenced. A direct MCP client verified handshake, session start/end, memory storage on Walrus and summary/task read-back. Reconnect/restart Codex's Atlas server to load its tools in the editor. Atlas now contains the worker TODO and this session's handoff; this file remains the local copy.
+The initial local checkpoint preceded GitHub publication. Atlas's missing dependencies were restored and its dotenv startup banner silenced. A direct MCP client verified handshake, session start/end, memory storage on Walrus and summary/task read-back. Atlas is running at localhost:3005; its MCP session API also reconnects successfully. This file remains the local handoff copy.

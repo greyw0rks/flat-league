@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-11-03T10:28:34.654Z",
+  "status": "passed",
+  "base": "https://flat-league.vercel.app",
+  "apiChecks": [
+    {
+      "path": "/api/health",
+      "status": 200
+    },
+    {
+      "path": "/api/competitions",
+      "status": 200
+    },
+    {
+      "path": "/api/leaderboard",
+      "status": 200
+    }
+  ],
+  "publicRoutes": [
+    "/",
+    "/discover",
+    "/create",
+    "/rules",
+    "/leaderboard"
+  ],
+  "widths": [
+    1440,
+    390,
+    360
+  ],
+  "reducedMotion": true,
+  "browserErrors": [],
+  "note": "Read-only checks against the public production deployment. No operator changes or signed transactions."
+}
