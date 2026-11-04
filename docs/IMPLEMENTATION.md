@@ -1,6 +1,6 @@
 # Implementation status and operations
 
-The November 2 build is a local MVP. MockWIF receipts demonstrate its lifecycle on Anvil chain 31337; they are not real WIF use or hackathon launch evidence.
+The November 3 hosted MVP runs on Vercel, Neon PostgreSQL and Robinhood Chain testnet (46630), using MockWIF. Anvil chain 31337 retains the local lifecycle proof. Neither establishes mainnet $WIF use. The November 5 source update includes the game UI and demo cleanup; see [the redesign handoff](ARCADE-REDESIGN.md).
 
 ## Implemented
 
@@ -9,7 +9,8 @@ The November 2 build is a local MVP. MockWIF receipts demonstrate its lifecycle 
 - Creator studio: ten custom questions, schedule, reward pool, private draft, salted pack commitment, exact token approval/funding, persisted transaction state and worker recovery of funded drafts.
 - Quiz: one attempt per wallet/round, randomized question/option order, only the current question exposed, server deadline, immutable idempotent answers, reload recovery and partial-attempt expiry scoring. No accepted answers means abandonment.
 - Worker: persistent effect keys, registration, attempt expiry, frozen scoring artifact, server-only EIP-712 signing, sponsored payout, transaction bytes stored before broadcast and retries. Confirmed reverts clear their consumed transaction so recovery can sign a new nonce. Graceful shutdown finishes the active tick and releases its lease.
-- Interface: brighter Three.js core with orbiting markers and a shared static/reduced-motion illustration, finite headline entrances, scoped GSAP scroll motion, animated discovery filters/cards, keyboard answer selection and question focus, confirmation marks, responsive podiums, sharing and a next available challenge. Wallet drawers restore focus to their opening control. Placement points are 10/6/4; other valid completions receive one.
+- Interface: light arcade lobby and locally stored trophy/question/chest/podium artwork across landing, discovery, detail and rankings. Keyboard answer selection, question focus, responsive podiums, sharing and a next available challenge remain available. Wallet drawers restore focus to their opening control. Placement points are 10/6/4; other valid completions receive one. The legacy orbital WebGL scene remains in source but is no longer mounted.
+- Known demo rounds are excluded from public discovery, ranking activity and profile reward totals through private fixture markers; direct historical evidence is preserved. New local deployment/check fixtures are marked automatically.
 - SQLite operations serialize per client; joins lock competition capacity and answer/expiry operations lock attempts under PostgreSQL. Unique constraints enforce one attempt and one answer per question.
 
 ## Verification
@@ -20,9 +21,9 @@ Seven PostgreSQL integration checks also pass against PostgreSQL 17.11 using a d
 
 Run `POSTGRES_TEST_URL=postgresql://<validation-admin>@127.0.0.1:<port>/postgres pnpm test:postgres` against an isolated validation cluster. The suite creates and removes a temporary database and application role, and requires database/role creation privileges. It creates `anon`/`authenticated` roles only when absent and removes roles it created. Ordinary `pnpm test` skips this suite when `POSTGRES_TEST_URL` is unset.
 
-The reproducible browser check is `scripts/check-ui.ts`. It creates a fresh player with no tokens or gas and confirms its exact reward balance increase. Its local lifecycle report and screenshots are stored in `evidence/local-lifecycle.json` and `evidence/ui/` after a successful run. Arena artwork is reviewed under normal and reduced-motion preferences; headless fallback screenshots do not establish hardware WebGL performance.
+The reproducible browser check is `scripts/check-ui.ts`. It creates a fresh player with no tokens or gas and confirms its exact reward balance increase. Its local lifecycle report and screenshots are stored in `evidence/local-lifecycle.json` and `evidence/ui/` after a successful run. This mutating lifecycle check was not rerun for the visual redesign; it creates funded local verification activity.
 
-`pnpm check:ui-polish` checks layout, keyboard filters, focus restoration, search/empty states, podium ordering and reduced motion on 1440px, 768px, 390px and 360px views. Three-place podium images are browser-only fixtures and are marked in `evidence/ui-polish.json`; they do not represent extra participants or rewards. A supported WebGL renderer enables frame/pause/offscreen/context-loss checks. Both available Chromium modes fail a direct WebGL2 probe in this environment, so the fallback path is verified and physical GPU/device checks remain open. Failed WebGL initialization removes the canvas and hides inactive motion controls.
+`pnpm check:ui-polish` checks layout, keyboard filters, focus restoration, search/empty states, podium ordering and reduced motion on 1440px, 768px, 390px and 360px views. Three-place podium images are browser-only fixtures and are marked in `evidence/ui-polish.json`; they do not represent extra participants or rewards. The current game UI uses static image artwork with no mounted WebGL canvas.
 
 ## Deployment requirements
 
@@ -36,13 +37,13 @@ Use provider RPC endpoints for production. Browser contract writes need the sele
 
 ## Outstanding release gates
 
-1. Apply the locally validated PostgreSQL migration to the hosted project and inspect its role memberships, default grants and exposed schemas.
+1. Keep the verified hosted PostgreSQL permissions intact as migrations and service roles evolve; deployment evidence is in `evidence/hosted-storage.json`.
 2. Add operational views, stronger worker lease renewal and relayer nonce replacement/manual recovery. A dropped/replaced transaction can otherwise keep retrying its stored bytes.
 3. Complete receipt/event reconciliation across finalization, payouts and reorgs. Current polling rechecks competition/participant state and backfills creation logs with a five-block overlap; confirmed payout hashes are not fully rolled back/reconciled during reorgs. This is not a production-complete indexer.
 4. Exercise worker process crashes/restarts during uncertain broadcasts and multiple-round concurrency. The worker processes one job per tick and polls at most 100 recent rounds/drafts.
-5. Inspect real WIF source/transfer restrictions, validate transfer/approval/exact escrow, then deploy/verify contracts on Robinhood testnet and mainnet with production keys and an agreed funding budget.
-6. Perform actual device/keyboard/WebGL performance checks and external participant testing. Reduced-motion browser screenshots alone do not prove Three.js performance.
-7. Publish the repository, hosted app, real WIF transaction evidence and demo, then preserve the submitted release through final judging.
+5. Inspect real WIF source/transfer restrictions, validate transfer/approval/exact escrow, then deploy/verify mainnet contracts with production keys and an agreed funding budget. Testnet contracts already exist; they use MockWIF.
+6. Publish the refreshed game UI and perform physical-device and independent participant testing.
+7. Add real $WIF transaction evidence and a workflow demo to the already public repository/hosted app, then preserve the submitted release through final judging.
 
 The scoring service is trusted to judge quiz results. Salted commitments and public transcripts aid review but do not stop answer sharing, external tools, multiple wallets or question authors playing their own pack. Do not claim human uniqueness, cheat resistance or decentralized judging.
 

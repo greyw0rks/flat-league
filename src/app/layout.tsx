@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import './globals.css';
+import './arcade.css';
 import { Providers } from '@/components/providers';
 import { NetworkBanner } from '@/components/layout';
 

@@ -38,7 +38,7 @@ for(const account of [creator,registrar,signer]){
 const env={NEXT_PUBLIC_APP_URL:'http://localhost:3020',APP_URL:'http://localhost:3020',NEXT_PUBLIC_CHAIN_ID:'31337',NEXT_PUBLIC_RPC_URL:'http://127.0.0.1:8547',RPC_URL:'http://127.0.0.1:8547',NEXT_PUBLIC_MANAGER_ADDRESS:manager,NEXT_PUBLIC_WIF_ADDRESS:token,DATABASE_URL:'file:.data/flat-league.db',RESULT_SIGNER_KEY:signerKey,RELAYER_PRIVATE_KEY:registrarKey,CONFIRMATIONS:'1',DEPLOYMENT_BLOCK:managerReceipt.blockNumber.toString(),LOCAL_DEMO:'true'};
 writeFileSync('.env.local','# LOCAL ANVIL ONLY. Public test keys; never use these accounts on a real network.\n'+Object.entries(env).map(([k,v])=>`${k}=${v}`).join('\n')+'\n',{mode:0o600});
 for(const[k,v]of Object.entries(env))process.env[k]=v;
-const {createDraft,publishDraft}=await import('../src/server/league');
+const {createDraft,publishDraft,markDemoCompetition}=await import('../src/server/league');
 const {demoQuestions}=await import('../packages/shared/demo-questions');
 const now=Date.now();const earliest=Math.floor(now/1000)*1000+30_000;
 const rounds=[];
@@ -47,7 +47,7 @@ for(const [index,title,pool,offset]of [[0,'The Knowledge Run','250',0],[1,'Commu
   const draft=await createDraft(creator.address,{title,description:'A public sample round in the local MockWIF playground. Ten questions, two minutes, and a place on the podium.',pool,startAt:earliest+offset,endAt:earliest+offset+6*3600_000,maxParticipants:100,questions:demoQuestions});
   const cfg=draft.config;
   const hash=await wallet.writeContract({address:manager,abi:managerAbi,functionName:'createCompetition',args:[{...cfg,startAt:BigInt(cfg.startAt),endAt:BigInt(cfg.endAt),finalizeBy:BigInt(cfg.finalizeBy)},BigInt(draft.pool)]});await client.waitForTransactionReceipt({hash});
-  const published=await publishDraft(creator.address,draft.id,hash);rounds.push({id:published.id,title,fundingHash:hash,startAt:earliest+offset});
+  const published=await publishDraft(creator.address,draft.id,hash);await markDemoCompetition(published.id);rounds.push({id:published.id,title,fundingHash:hash,startAt:earliest+offset});
 }
 mkdirSync('evidence',{recursive:true});writeFileSync('evidence/local-deployment.json',JSON.stringify({network:'Local Anvil ONLY',chainId:31337,token,manager,creator:creator.address,registrar:registrar.address,signer:signer.address,tokenDeployment:tokenHash,managerDeployment:managerHash,approvalHash,rounds},null,2)+'\n');
 console.log(`Local contracts deployed. ${rounds.length} real MockWIF-funded rounds created. Start web and worker with pnpm dev and pnpm worker.`);

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { createDatabase, migrate, one, type Database } from '../src/server/database';
-import { startAttempt, answerAttempt, getAttempt, joinCompetition, standingsFor } from '../src/server/league';
+import { startAttempt, answerAttempt, getAttempt, joinCompetition, standingsFor, listCompetitions, markDemoCompetition } from '../src/server/league';
 import { allocatePool, canonical, commitQuestions, hashArtifact, rankAttempts } from '../packages/shared/domain';
 import { demoQuestions } from '../packages/shared/demo-questions';
 import { requireOrigin } from '../src/server/auth';
@@ -22,6 +22,17 @@ async function withDb(fn: (db: Database) => Promise<void>, registered = true, ca
   const db = await fixture(registered, capacity); try { await fn(db); } finally { await db.close(); }
 }
 function answerFor(questionId: string) { return demoQuestions.find(q => q.id === questionId)!.correctOption; }
+
+test('demo rounds leave public discovery while genuine rounds and retained evidence remain', () => withDb(async db => {
+  await db.query("INSERT INTO fl_competitions SELECT 'genuine', '2', creator, title, description, pool, start_at, end_at, finalize_by, max_participants, rules_hash, question_commitment, result_signer, registrar, funding_hash, state, settlement_hash, result_json, signature, created_at FROM fl_competitions WHERE id='round'");
+  assert.equal((await listCompetitions(undefined, db)).length, 2);
+  await markDemoCompetition('round', db);
+  await markDemoCompetition('round', db);
+  assert.deepEqual((await listCompetitions(undefined, db)).map(c => c.id), ['genuine']);
+  assert.deepEqual((await listCompetitions(wallet, db)).map(c => c.id), ['genuine']);
+  assert.ok(await one(db, 'SELECT funding_hash FROM fl_competitions WHERE id=?', ['round']));
+  await assert.rejects(markDemoCompetition('missing', db), { code: 'NOT_FOUND' });
+}));
 
 test('concurrent starts create one attempt and reveal only the current question', () => withDb(async db => {
   const attempts = await Promise.all(Array.from({ length: 8 }, () => startAttempt('round', wallet, db, now)));

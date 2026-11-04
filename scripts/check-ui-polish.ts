@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { chromium, expect } from '@playwright/test';
 import type { CompetitionView, Standing } from '../packages/shared/domain';
 
@@ -7,7 +7,7 @@ const base = process.env.UI_BASE_URL || 'http://localhost:3020';
 if (!['localhost', '127.0.0.1'].includes(new URL(base).hostname)) throw new Error('UI review requires a local preview.');
 mkdirSync('evidence/ui', { recursive: true });
 const errors: string[] = [];
-const report: Record<string, unknown> = { base, checkedAt: new Date().toISOString(), errors, fixtureScreenshots: ['results-three-player-fixture-desktop.png', 'results-three-player-fixture-mobile.png'] };
+const report: Record<string, unknown> = { base, checkedAt: new Date().toISOString(), errors, fixtureScreenshots: [] };
 const browser = await chromium.launch({ headless: true, args: ['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 try {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
@@ -15,7 +15,7 @@ try {
   context.on('page', page => page.on('pageerror', error => errors.push(error.message)));
   const page = await context.newPage();
   await page.goto(base); await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await expect(page.locator('.arena-poster')).toBeVisible();
+  await expect(page.locator('.hero-art .game-world img')).toBeVisible();
   await expect(page.locator('.arena-canvas canvas')).toHaveCount(0);
   await page.screenshot({ path: 'evidence/ui/landing-polished-desktop.png', fullPage: true });
   await page.getByRole('button', { name: 'Connect wallet', exact: true }).focus(); await page.keyboard.press('Enter');
@@ -42,13 +42,24 @@ try {
     await page.getByRole('button', { name: 'Clear filters', exact: true }).click();
     await expect(page.getByLabel('Search competitions')).toHaveValue('');
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${size.name} discover overflow`);
+    await page.getByRole('heading', { level: 1 }).click();
     await page.screenshot({ path: `evidence/ui/discover-polished-${size.name}.png`, fullPage: true });
   }
   report.responsiveAndFilters = sizes.map(s => s.name);
 
   const response = await fetch(base + '/api/competitions'); assert.equal(response.status, 200);
   const { competitions } = await response.json() as { competitions: CompetitionView[] };
-  const finalized = competitions.find(c => c.status === 'finalized');
+  let finalized = competitions.find(c => c.status === 'finalized');
+  // Retained local evidence can exercise result layouts without listing a demo
+  // as a real public challenge or creating new activity.
+  if (!finalized && existsSync('evidence/local-lifecycle.json')) {
+    const { competitionId } = JSON.parse(readFileSync('evidence/local-lifecycle.json', 'utf8'));
+    const retained = await fetch(base + '/api/competitions/' + competitionId);
+    if (retained.ok) {
+      const data = await retained.json() as { competition: CompetitionView };
+      if (data.competition.status === 'finalized') finalized = data.competition;
+    }
+  }
   if (finalized) {
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto(`${base}/competitions/${finalized.id}/results`);
@@ -73,55 +84,15 @@ try {
     assert.ok(boxes[0] && boxes[1] && boxes[2] && boxes[1].x < boxes[0].x && boxes[0].x < boxes[2].x, 'Desktop winner must sit between second and third');
     await page.screenshot({ path: 'evidence/ui/results-three-player-fixture-desktop.png', fullPage: true });
     report.threePlayerLayoutFixture = 'passed';
+    report.fixtureScreenshots = ['results-three-player-fixture-desktop.png', 'results-three-player-fixture-mobile.png'];
   }
-  await context.close();
-
-  const animatedContext = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'no-preference' });
-  animatedContext.setDefaultNavigationTimeout(120_000);
-  animatedContext.on('page', page => page.on('pageerror', error => errors.push(error.message)));
-  const animated = await animatedContext.newPage(); await animated.goto(base);
-  await expect(animated.locator('.arena-canvas')).toBeVisible({ timeout: 30_000 });
-  await expect(animated.locator('.arena-canvas canvas, .arena-canvas .arena-poster')).toHaveCount(1, { timeout: 30_000 });
-  await animated.waitForTimeout(1000);
-  const canvas = animated.locator('.arena-canvas canvas');
-  const webgl = await canvas.count() === 1;
-  if (webgl) {
-    await expect(animated.getByRole('button', { name: 'Pause arena animation' })).toBeVisible();
-    const before = await canvas.screenshot(); await animated.waitForTimeout(250); const after = await canvas.screenshot();
-    report.animatedFramesChanged = !before.equals(after);
-    assert.ok(!before.equals(after), 'Arena canvas must animate');
-    await animated.getByRole('button', { name: 'Pause arena animation' }).click();
-    await expect(animated.getByRole('button', { name: 'Play arena animation' })).toHaveAttribute('aria-pressed', 'true');
-    await expect(animated.locator('.arena-canvas')).toHaveAttribute('data-motion-state', 'paused');
-  }
-  if (webgl) {
-    await animated.waitForTimeout(200);
-    const before = await canvas.screenshot(); await animated.waitForTimeout(250); const after = await canvas.screenshot();
-    assert.ok(before.equals(after), 'Paused canvas must stop animating'); report.pausedFramesStable = true;
-  }
-  await animated.screenshot({ path: 'evidence/ui/landing-polished-motion.png', fullPage: true });
-  if (webgl) {
-    await animated.getByRole('button', { name: 'Play arena animation' }).click();
-    await animated.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await expect(animated.locator('.arena-canvas')).toHaveAttribute('data-motion-state', 'paused');
-    await animated.evaluate(() => window.scrollTo(0, 0));
-    await expect(animated.locator('.arena-canvas')).toHaveAttribute('data-motion-state', 'running');
-    await canvas.evaluate(node => node.dispatchEvent(new Event('webglcontextlost')));
-    await expect(animated.locator('.arena-canvas .arena-poster')).toBeVisible();
-    await expect(animated.locator('.arena-canvas canvas')).toHaveCount(0);
-    await expect(animated.getByRole('link', { name: 'Enter the league', exact: true })).toBeVisible();
-    report.contextLossFallback = 'passed';
-    report.pauseAndOffscreen = 'passed';
-  } else {
-    await expect(animated.locator('.arena-canvas')).toHaveAttribute('data-motion-state', 'static');
-    await expect(animated.getByRole('button', { name: 'Pause arena animation' })).toHaveCount(0);
-    await expect(animated.getByRole('link', { name: 'Enter the league', exact: true })).toBeVisible();
-    report.pauseAndOffscreen = 'requires WebGL-capable browser; unavailable controls correctly hidden';
-  }
-  report.webgl = webgl ? 'software Chromium canvas verified; physical-device performance not measured' : 'static fallback rendered';
+  await page.goto(base + '/leaderboard');
+  await expect(page.locator('.league-podium .game-world img')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Every finish moves you forward.' })).toBeVisible();
+  report.arcadeArtwork = 'local image artwork, no WebGL dependency';
   report.reducedMotion = 'static artwork, no canvas';
-  await animatedContext.close();
   assert.deepEqual(errors, [], 'Browser runtime errors');
+  await context.close();
   report.status = 'passed';
   console.log(JSON.stringify(report, null, 2));
 } finally {

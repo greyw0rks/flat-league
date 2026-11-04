@@ -1,4 +1,24 @@
-# Flat League handoff — November 3, 2026
+# Flat League handoff — November 5, 2026
+
+## Current checkpoint
+
+The Arcadia GoodBuilders game UI direction is implemented locally: warm light surfaces, lavender feature areas, illustrated game worlds, Manrope headings, clearer play buttons, and responsive landing/lobby/detail/ranking/result/form/quiz layouts. Local WebP artwork comes from the builder's reference project; Arcadia branding is excluded. The legacy WebGL scene is no longer mounted. See [the redesign](ARCADE-REDESIGN.md) and [art provenance](../public/world/README.md).
+
+Ten known local seed/browser-proof challenges are privately marked as fixtures. Public lists, league rankings and profile reward totals exclude them; historical rows/contracts/receipts and direct result pages remain accessible. Local seed and lifecycle-check scripts mark new verification rounds automatically. Genuine user rounds remain visible. The hosted competition API returned no rounds during this review.
+
+Current validation: production build, standalone typecheck and 14 backend tests pass (the optional PostgreSQL integration suite is skipped without its isolated database URL). Responsive UI review passes at desktop/tablet/390/360px with keyboard filters/search, wallet focus restoration, reduced motion, retained actual results and an explicitly labelled browser-only three-player podium fixture. Zero browser runtime errors. Existing optional MetaMask native-storage and WalletConnect logging dependencies still emit nonfatal build warnings. No lifecycle/contract tests were rerun and no new funding/play/settlement/payout transaction was sent for this visual update.
+
+The environment loader now supports both Node ESM's CommonJS default export and Next's bundled named export. The production build and standalone CLI work with it.
+
+[Submission answers](SUBMISSION.md) cover the complete form, with text limits checked. The optional square logo is in `public/brand/`. The README is now a short product explanation, with [setup](SETUP.md) and implementation/hosting details linked separately.
+
+The public repository is https://github.com/greyw0rks/flat-league and the hosted testnet app is https://flat-league.vercel.app. The user authorized pushing this UI/submission update to `main` on November 5. Vercel is connected to the repository; confirm its deployment status before treating the live app as the new release. No separate deployment command is part of this push. Local preview: http://127.0.0.1:3020/discover. Keep local Anvil/SQLite configuration separate from hosted Neon/testnet configuration.
+
+Remaining submission artifacts: a genuine app-workflow video URL and actual mainnet $WIF transaction evidence. The hosted MVP uses Robinhood Chain testnet (46630), CompetitionManager `0x0e9cb1eb0fdf7d13e2eaec067ec5512acbb1b3bd`, and MockWIF `0xf7c5b108fe25ad17bba9ba4225c40ef167664fc8`. Do not present testnet/Anvil hashes as mainnet $WIF use. No Flat League submission is confirmed. The user will render/export the demo; use Sequence Studio and ElevenLabs Jack John – Conversational and Upbeat when preparing it. Publish the UI, record the actual workflow, test real $WIF integration under an agreed budget, and gather independent playtests.
+
+## Previous checkpoint — November 3
+
+The sections below retain the earlier build history. The current checkpoint above supersedes their UI, environment-loader and pending-hosting descriptions.
 
 ## Hosted release checkpoint
 

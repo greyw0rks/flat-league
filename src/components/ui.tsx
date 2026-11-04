@@ -8,6 +8,7 @@ import { currencyLabel, explorerTx, shortWallet } from '@/lib/config';
 import type { CompetitionView, CompetitionStatus } from '@shared/domain';
 import { serverClockNow } from '@/lib/api';
 import { enterEase, CompletionMark } from './motion';
+import { GameWorld } from './game-world';
 
 export function Amount({ value, className = '' }: { value: string; className?: string }) { const n = formatUnits(BigInt(value || '0'), 18); const [whole, decimals] = n.split('.'); return <span className={'amount mono ' + className}>{BigInt(whole).toLocaleString()}{decimals && decimals !== '0' ? '.' + decimals.slice(0, 4).replace(/0+$/, '') : ''}<small>{currencyLabel}</small></span>; }
 const statuses: Record<CompetitionStatus, string> = { live: 'Live now', upcoming: 'Upcoming', awaiting: 'Awaiting results', finalized: 'Finalized', cancelled: 'Cancelled', refunded: 'Refunded', expired: 'Settlement expired' };
@@ -49,7 +50,7 @@ export const CompetitionCard = forwardRef<HTMLElement, { competition: Competitio
     transition={{ duration: reduced ? .1 : .3, delay: reduced ? 0 : Math.min(index, 5) * .04, ease: enterEase, layout: { duration: .28, delay: 0 } }}
     whileHover={reduced ? undefined : { y: -4 }}>
     <Link href={href} className="card-cover-link" aria-label={c.title} />
-    <div className="competition-art"><ArenaIllustration variant={variant} /><StatusBadge status={c.status} /><span className="card-mode eyebrow">KNOWLEDGE RUN <span className="mono">/ 120 SEC</span></span></div>
+    <div className={'competition-art game-art-'+variant}><GameWorld kind={(['quiz','trophy','chest'] as const)[variant]} /><StatusBadge status={c.status} /><span className="card-mode eyebrow">KNOWLEDGE RUN <span className="mono">/ 120 SEC</span></span></div>
     <div className="competition-card-body"><div className="card-creator"><Identicon wallet={c.creator} size={18} /><span className="mono">{shortWallet(c.creator)}</span><span>· Creator</span></div>
       <h3 title={c.title}>{c.title}</h3><p className="card-description">{c.description}</p>
       <div className="card-facts"><span><Clock3 size={13} />10 questions</span><span><UsersRound size={13} />{c.participantCount} / {c.maxParticipants}</span><span>Free entry</span></div>

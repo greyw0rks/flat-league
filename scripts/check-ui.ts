@@ -78,6 +78,8 @@ try {
   await page.getByRole('button', { name: 'Fund 10 MockWIF', exact: true }).click();
   await page.waitForURL(/\/competitions\/[\w-]+$/, { timeout: 60_000 });
   const id = page.url().split('/').at(-1)!;
+  const { markDemoCompetition } = await import('../src/server/league');
+  await markDemoCompetition(id);
   const { competition: round } = await json<{ competition: CompetitionView }>('/competitions/' + id);
   assert.equal(round.pool, parseUnits('10', 18).toString());
   assert.equal((await client.getTransactionReceipt({ hash: round.fundingHash })).status, 'success');
@@ -128,9 +130,9 @@ try {
   const animated = await visualContext.newPage();
   animated.on('pageerror', error => failures.push(error.message));
   await animated.goto(base);
-  await expect(animated.locator('.arena-canvas')).toBeVisible({ timeout: 15_000 });
+  await expect(animated.locator('.hero-art .game-world img')).toBeVisible({ timeout: 15_000 });
   await animated.waitForTimeout(1000);
-  assert.ok(await animated.locator('.arena-canvas canvas, .arena-canvas svg').count(), 'Arena must render WebGL or its fallback');
+  assert.ok(await animated.locator('.hero-art .game-world img').count(), 'Arcade world artwork must render');
   await animated.screenshot({ path: 'evidence/ui/landing-webgl.png', fullPage: true });
   await visualContext.close();
   while (Date.now() < end + 1000) await new Promise(resolve => setTimeout(resolve, Math.min(10_000, end + 1000 - Date.now())));

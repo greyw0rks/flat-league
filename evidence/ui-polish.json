@@ -1,6 +1,6 @@
 {
   "base": "http://localhost:3020",
-  "checkedAt": "2026-11-03T07:47:29.865Z",
+  "checkedAt": "2026-11-04T23:34:51.348Z",
   "errors": [],
   "fixtureScreenshots": [
     "results-three-player-fixture-desktop.png",
@@ -14,8 +14,7 @@
   ],
   "actualResultRound": "a6e7b369-7f2d-46f7-b61b-970c61fe7321",
   "threePlayerLayoutFixture": "passed",
-  "pauseAndOffscreen": "requires WebGL-capable browser; unavailable controls correctly hidden",
-  "webgl": "static fallback rendered",
+  "arcadeArtwork": "local image artwork, no WebGL dependency",
   "reducedMotion": "static artwork, no canvas",
   "status": "passed"
 }

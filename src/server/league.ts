@@ -28,9 +28,14 @@ export async function competitionView(c: Row, db: Executor, wallet?: string, now
     attemptId: attempt?.id as string | undefined, attemptState: attempt?.state as string | undefined
   };
 }
-export async function listCompetitions(wallet?: string) {
-  const db = await database();
-  const rows = await db.query('SELECT * FROM fl_competitions ORDER BY created_at DESC LIMIT 100');
+export async function markDemoCompetition(id: string, db?: Database) {
+  db ||= await database();
+  await competitionRow(id, db);
+  await db.query("INSERT INTO fl_state(key,value) VALUES(?,?) ON CONFLICT(key) DO NOTHING", ['demo-round:' + id, 'Local verification fixture']);
+}
+export async function listCompetitions(wallet?: string, db?: Database) {
+  db ||= await database();
+  const rows = await db.query("SELECT c.* FROM fl_competitions c WHERE NOT EXISTS (SELECT 1 FROM fl_state s WHERE s.key='demo-round:' || c.id) ORDER BY created_at DESC LIMIT 100");
   return Promise.all(rows.rows.map(c => competitionView(c, db, wallet)));
 }
 export async function getCompetition(id: string, wallet?: string) {
@@ -191,6 +196,6 @@ export async function profileView(wallet: string) {
   const db = await database();
   const competitions = await listCompetitions(wallet);
   const history = competitions.filter(c => c.attemptId);
-  const rewards = (await db.query('SELECT * FROM fl_rewards WHERE wallet=?', [wallet.toLowerCase()])).rows;
+  const rewards = (await db.query("SELECT r.* FROM fl_rewards r WHERE wallet=? AND NOT EXISTS (SELECT 1 FROM fl_state s WHERE s.key='demo-round:' || r.competition_id)", [wallet.toLowerCase()])).rows;
   return { wallet: getAddress(wallet), history, rewards: rewards.filter(r => r.tx_hash), totalRewards: rewards.filter(r => r.tx_hash).reduce((s, r) => s + BigInt(String(r.amount)), 0n).toString() };
 }
