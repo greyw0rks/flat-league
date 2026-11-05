@@ -1,4 +1,4 @@
-import { createClient, type Client as SqliteClient, type Transaction as SqliteTransaction } from '@libsql/client';
+import { DatabaseSync } from 'node:sqlite';
 import { Pool, type PoolClient } from 'pg';
 import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
@@ -8,6 +8,15 @@ export type Row = Record<string, string | number | null>;
 export interface QueryResult { rows: Row[]; count: number }
 export interface Executor { query(sql: string, args?: (string | number | null)[]): Promise<QueryResult> }
 export interface Database extends Executor { transaction<T>(fn: (tx: Executor) => Promise<T>): Promise<T>; close(): Promise<void>; postgres: boolean }
+
+type SqliteQueue = { tail: Promise<unknown>; users: number };
+// Separate clients in the same Node process must take turns too: waiting for
+// SQLite's writer lock synchronously would prevent the other client committing.
+const processState = globalThis as typeof globalThis & { flatLeagueSqliteQueues?: Map<string, SqliteQueue> };
+const sqliteQueues = processState.flatLeagueSqliteQueues ||= new Map<string, SqliteQueue>();
+// Bump when schemaStatements changes. Next can load the server in multiple
+// processes; unchanged local schemas should not acquire a migration write lock.
+const sqliteSchemaVersion = 1;
 
 const pgSql = (sql: string) => {
   let index = 0;
@@ -28,23 +37,38 @@ export function createDatabase(url: string): Database {
   }
   if (!url.startsWith('file:')) throw new Error('Use a file: development database or a PostgreSQL connection URL.');
   if (url !== 'file::memory:') mkdirSync(dirname(resolve(url.slice(5))), { recursive: true });
-  const client: SqliteClient = createClient({ url });
-  // A libSQL client shares its connection with transactions. Queue top-level
-  // operations so concurrent HTTP requests cannot run inside another request's transaction.
-  let tail: Promise<unknown> = (async () => {
-    await client.execute('PRAGMA busy_timeout=5000');
-    if (url !== 'file::memory:') await client.execute('PRAGMA journal_mode=WAL');
-  })();
+  const memory = url === 'file::memory:';
+  const file = memory ? ':memory:' : resolve(url.slice(5));
+  const client = new DatabaseSync(file);
+  const queue = memory ? { tail: Promise.resolve(), users: 0 } : sqliteQueues.get(file) || { tail: Promise.resolve(), users: 0 };
+  queue.users++;
+  if (!memory) sqliteQueues.set(file, queue);
   const serial = <T>(fn: () => Promise<T>): Promise<T> => {
-    const result = tail.then(fn); tail = result.catch(() => {}); return result;
+    const result = queue.tail.then(fn); queue.tail = result.catch(() => {}); return result;
   };
-  const executor = (db: SqliteClient | SqliteTransaction): Executor => ({ query: async (sql, args = []) => {
-    const res = await db.execute({ sql, args });
-    return { rows: res.rows as unknown as Row[], count: res.rowsAffected };
-  } });
-  return { query: (sql, args) => serial(() => executor(client).query(sql, args)), postgres: false,
-    transaction: fn => serial(async () => { const tx = await client.transaction('write'); try { const value = await fn(executor(tx)); await tx.commit(); return value; } catch (e) { await tx.rollback(); throw e; } finally { tx.close(); } }),
-    close: async () => { await tail; client.close(); }
+  // Native statements are fully consumed before returning. Keep one connection
+  // per client and configure cross-process lock waits on that connection.
+  void serial(async () => {
+    client.exec('PRAGMA busy_timeout=5000');
+    if (!memory) client.exec('PRAGMA journal_mode=WAL');
+  });
+  const executor: Executor = { query: async (sql, args = []) => {
+    const statement = client.prepare(sql);
+    if (statement.columns().length) return { rows: statement.all(...args) as Row[], count: 0 };
+    return { rows: [], count: Number(statement.run(...args).changes) };
+  } };
+  let closed = false;
+  return { query: (sql, args) => serial(() => executor.query(sql, args)), postgres: false,
+    transaction: fn => serial(async () => {
+      client.exec('BEGIN IMMEDIATE');
+      try { const value = await fn(executor); client.exec('COMMIT'); return value; }
+      catch (e) { client.exec('ROLLBACK'); throw e; }
+    }),
+    close: () => serial(async () => {
+      if (closed) return;
+      client.close(); closed = true;
+      if (--queue.users === 0 && !memory) sqliteQueues.delete(file);
+    })
   };
 }
 export async function migrate(db: Database) {
@@ -53,7 +77,7 @@ export async function migrate(db: Database) {
   await db.transaction(async tx => {
     if (db.postgres) await tx.query('CREATE SCHEMA IF NOT EXISTS private');
     for (const statement of schemaStatements) await tx.query(statement);
-    if (!db.postgres) return;
+    if (!db.postgres) { await tx.query('PRAGMA user_version=' + sqliteSchemaVersion); return; }
     const roles = (await tx.query("SELECT rolname FROM pg_roles WHERE rolname IN ('anon','authenticated')")).rows;
     const grantees = ['PUBLIC', ...roles.map(r => `"${String(r.rolname)}"`)].join(', ');
     await tx.query(`REVOKE ALL ON SCHEMA private FROM ${grantees}`);
@@ -69,7 +93,7 @@ let singleton: Promise<Database> | undefined;
 export function database(): Promise<Database> {
   if (!singleton) singleton = (async () => {
     const db = createDatabase(process.env.DATABASE_URL || 'file:.data/flat-league.db');
-    if (!db.postgres) await migrate(db);
+    if (!db.postgres && Number((await one(db, 'PRAGMA user_version'))?.user_version) !== sqliteSchemaVersion) await migrate(db);
     return db;
   })();
   return singleton;

@@ -99,6 +99,8 @@ async function handle(request: Request, context: { params: Promise<{ path: strin
     if (error instanceof ZodError) return reply({ error: 'VALIDATION', message: error.issues[0]?.message || 'Check your inputs.' }, 400);
     console.error('Flat League API error:', error instanceof Error ? error.name : 'UnknownError',
       error && typeof error === 'object' && 'code' in error ? String(error.code) : '');
+    // Native SQLite diagnostics contain schema/engine errors, not bound values.
+    if (error instanceof Error && 'code' in error && error.code === 'ERR_SQLITE_ERROR') console.error('SQLite:', error.message);
     return reply({ error: 'UNAVAILABLE', message: 'The service is temporarily unavailable. Please try again.' }, 503);
   }
 }

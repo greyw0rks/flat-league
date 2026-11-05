@@ -1,0 +1,12 @@
+{
+  "competitionId": "10ee33d6-8d49-4f33-8d30-60c821b0e0dd",
+  "notes": "Reviewed real join footage. Retain wallet choice, zero token/gas balances, sign-in, free-entry click, registration confirmation and start sheet; remove inactive waiting. Ranges are seconds relative to the original join segment.",
+  "scenes": {
+    "join": [
+      { "start": 0, "seconds": 8 },
+      { "start": 10, "seconds": 6 },
+      { "start": 18, "seconds": 4 },
+      { "start": 32, "seconds": 6.449 }
+    ]
+  }
+}

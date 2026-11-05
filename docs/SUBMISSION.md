@@ -97,7 +97,7 @@ Leave blank until there are verified transactions using real $WIF on Robinhood C
 
 **How it's made — 1,500 characters maximum**
 
-Next.js, React and TypeScript power the app. Wagmi and viem handle wallet connections and contract calls; SIWE authenticates players. The hosted service uses Neon PostgreSQL, with private question, session and job tables. Local development uses SQLite/libSQL and Anvil. Solidity CompetitionManager uses OpenZeppelin and EIP-712 signatures; Foundry tests the escrow and settlement rules. A persistent worker sponsors registration and reward delivery, while Vercel and scheduled GitHub Actions run the hosted workflow.
+Next.js, React and TypeScript power the app. Wagmi and viem handle wallet connections and contract calls; SIWE authenticates players. The hosted service uses Neon PostgreSQL, with private question, session and job tables. Local development uses Node's native SQLite and Anvil. Solidity CompetitionManager uses OpenZeppelin and EIP-712 signatures; Foundry tests the escrow and settlement rules. A persistent worker sponsors registration and reward delivery, while Vercel and scheduled GitHub Actions run the hosted workflow.
 
 The hardest part was connecting a timed, server-scored quiz to recoverable onchain settlement. Answers must remain private during play, retries must not change accepted answers or produce duplicate effects, and a signed allocation must account for the whole escrow pool. The build includes server deadlines, immutable answers, frozen result artifacts, isolated escrow accounting, persistent transaction recovery and fixed-recipient claims. Scoring still trusts the service, and reorg/drop recovery needs further hardening before a funded mainnet launch.
 

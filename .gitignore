@@ -2,6 +2,7 @@ node_modules/
 .next/
 .next-ui/
 .next-release/
+.next-video/
 .env*
 !.env.example
 .data/

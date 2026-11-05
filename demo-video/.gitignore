@@ -1,0 +1,6 @@
+assets/
+sequence-media/
+output/
+*.zip
+sequence-project.json
+timeline.json

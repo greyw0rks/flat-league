@@ -17,5 +17,6 @@ The game UI uses a light arcade lobby, illustrated challenge worlds and clear pl
 | [Implementation and operations](docs/IMPLEMENTATION.md) | Stack, trust boundaries and remaining release work |
 | [Game UI update](docs/ARCADE-REDESIGN.md) | Design reference, artwork and demo cleanup |
 | [Submission answers](docs/SUBMISSION.md) | Form copy and outstanding proof artifacts |
+| [Demo video](demo-video/README.md) | Editable Sequence Studio walkthrough and export instructions |
 | [Architecture](docs/ARCHITECTURE.md) | Escrow, authentication, scoring and settlement |
 | [Build plan](docs/BUILD-PLAN.md) · [Verified facts](docs/VERIFICATION.md) | Original scope, network sources and event dates |

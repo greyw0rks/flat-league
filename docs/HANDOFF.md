@@ -1,6 +1,18 @@
 # Flat League handoff — November 5, 2026
 
-## Current checkpoint
+## Current checkpoint — workflow demo
+
+The editable **Flat League** project is prepared in Sequence Studio at **http://127.0.0.1:4310**, verified from Windows. Eight scenes, 103.5 seconds, 1920 × 1080, 30 fps, with ElevenLabs **Jack John – Conversational and Upbeat** (voice ID `7EzWGsX10sAS4c9m9cPf`). The account's alternate name has the same shared-library voice ID. The user renders, exports and uploads; the agent has started no final render/export job. A render started through the editor at 01:50 UTC is preserved. Its stored snapshot uses earlier clip IDs, so reload the editor before rendering the polished version. All eight updated previews pass with zero browser errors and zero agent render requests. See [demo preparation and export instructions](../demo-video/README.md).
+
+The actual recorded local round is `10ee33d6-8d49-4f33-8d30-60c821b0e0dd`, onchain ID 17: creator funding, a fresh player with zero tokens/gas, sponsored registration, ten accepted answers with reload recovery, score 100 in 28.842 seconds, signed settlement and a confirmed 10 MockWIF payout. The five-minute event and two-minute quiz use real time. The round is excluded from public lists/rankings/profile totals; all receipts and prior preparation fixtures are retained. This is Anvil 31337/MockWIF proof, not real mainnet $WIF use.
+
+SQLite preparation failures led to Node's native SQLite connection, a shared queue for same-file clients and schema-version checks that skip unchanged startup migrations. Bump `sqliteSchemaVersion` when editing the schema. Sixteen backend tests pass, including independent process writes, rollback and startup reads while a separate process holds a write transaction; the optional PostgreSQL suite is skipped. The final production build passes with existing optional connector warnings. Capture uses the real worker with `--once`; continuous worker operation is not established by the demo.
+
+The portable project/media kit is generated locally as `demo-video/flat-league-sequence-kit.zip`. Runtime wallet recovery files, raw recordings, generated media and the ZIP are ignored by Git. The source clips retain chronological actions, cut inactive waiting and cover the Next development indicator with a small LOCAL TEST label; the media manifest records these edits.
+
+The user requested closing unused ports. The recording's app/Anvil servers, old HyperFrames preview and all four unused Chainroom containers are stopped, with persisted data preserved. Only Sequence's app ports 4310/4311 remain, alongside system DNS and Codex/container infrastructure. Existing Sequence projects remain preserved. A public demo video URL, actual mainnet $WIF evidence and confirmed Flat League submission remain outstanding user/release steps.
+
+## UI checkpoint — earlier November 5
 
 The Arcadia GoodBuilders game UI direction is implemented locally: warm light surfaces, lavender feature areas, illustrated game worlds, Manrope headings, clearer play buttons, and responsive landing/lobby/detail/ranking/result/form/quiz layouts. Local WebP artwork comes from the builder's reference project; Arcadia branding is excluded. The legacy WebGL scene is no longer mounted. See [the redesign](ARCADE-REDESIGN.md) and [art provenance](../public/world/README.md).
 
